@@ -1,0 +1,18 @@
+<p>I have been using the esp8266 for a while and exploring the use of least possible add-ons(to minimize costs) while interacting with it. The esp8266 has different modes of operation, the most common being access point and client. A typical usage scenario while using the esp8266 would be to set it in access point mode, no password set, connect to it and submit a form with the ssid and password for the network it should join. In my scenario, the esp8266 works only in access point mode and the user connects to it. I could use a fixed password, but I want a randomly generated password each time the esp8266 turns on. I could opt to use a display, but this will probably be more expensive.</p>
+
+<p>I started to think about different ways to communicate and came up with a couple of ideas. The first of these is to use a blinking led graph bar to send the password to a phone via the camera. In theory, this seems reasonable, most phones have cameras capable of recording video at 30 fps. There are 2 parts required to get this to work, image processing to identify the state of the leds and a microcontroller with blinking leds. Since encoding characters into on/off leds is simple, I decided to get started with the image processing. Having an android phone, I’ll be using Java.</p>
+
+<p>You’ll find this post in your <code class="highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+
+<p>To add new posts, simply add a file in the <code class="highlighter-rouge">_posts</code> directory that follows the convention <code class="highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+
+<p>Jekyll also offers powerful support for code snippets:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+
+<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
+
