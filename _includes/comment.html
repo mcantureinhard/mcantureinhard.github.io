@@ -1,0 +1,18 @@
+<form method="POST"
+      action="https://api.staticman.net/v2/entry/mcantureinhard/mcantureinhard.github.io/comments">
+      <input name="fields[product]" type="hidden" value="{{ page.slug }}" />
+      <input name="options[redirect]" type="hidden" value="{{site.url}}{{site.baseurl}}{{ page.url }}" />
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="comment_name" name="fields[name]" placeholder="Your name">
+  </div>
+  <div class="form-group">
+    <label for="email">Email address (optional)</label>
+    <input type="email" class="form-control" id="comment_email" name="fields[email]" placeholder="name@example.com">
+  </div>
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <textarea class="form-control" name="fields[message]" id="comment_comment" rows="3"></textarea>
+  </div>
+  <button class="btn btn-primary" type="submit">Submit comment</button>
+</form>

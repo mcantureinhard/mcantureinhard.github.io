@@ -28,7 +28,13 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
-
+sass:
+    sass_dir: _sass
+jsarr:
+  - assets/javascript/jquery-3.3.1.js
+  - assets/javascript/fontawesome-all.js
+  - assets/javascript/popper.js
+  - assets/javascript/bootstrap.js
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.

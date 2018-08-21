@@ -9,29 +9,31 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="I have been using the esp8266 for a while and exploring the use of least possible add-ons(to minimize costs) while interacting with it. The esp8266 has different modes of operation, the most common being access point and client. A typical usage scenario while using the esp8266 would be to set it in access point mode, no password set, connect to it and submit a form with the ssid and password for the network it should join. In my scenario, the esp8266 works only in access point mode and the user connects to it. I could use a fixed password, but I want a randomly generated password each time the esp8266 turns on. I could opt to use a display, but this will probably be more expensive." />
 <meta property="og:description" content="I have been using the esp8266 for a while and exploring the use of least possible add-ons(to minimize costs) while interacting with it. The esp8266 has different modes of operation, the most common being access point and client. A typical usage scenario while using the esp8266 would be to set it in access point mode, no password set, connect to it and submit a form with the ssid and password for the network it should join. In my scenario, the esp8266 works only in access point mode and the user connects to it. I could use a fixed password, but I want a randomly generated password each time the esp8266 turns on. I could opt to use a display, but this will probably be more expensive." />
-<link rel="canonical" href="https://mcantureinhard.github.io/led-camera-decoding-part-one/" />
-<meta property="og:url" content="https://mcantureinhard.github.io/led-camera-decoding-part-one/" />
+<link rel="canonical" href="http://localhost:4000/led-camera-decoding-part-one/" />
+<meta property="og:url" content="http://localhost:4000/led-camera-decoding-part-one/" />
 <meta property="og:site_name" content="Random code generator" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-08-19T21:00:00+02:00" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","headline":"Minimalistic arduino communication: Led graph bar and image processing - PART 1","dateModified":"2018-08-19T21:00:00+02:00","datePublished":"2018-08-19T21:00:00+02:00","url":"https://mcantureinhard.github.io/led-camera-decoding-part-one/","mainEntityOfPage":{"@type":"WebPage","@id":"https://mcantureinhard.github.io/led-camera-decoding-part-one/"},"description":"I have been using the esp8266 for a while and exploring the use of least possible add-ons(to minimize costs) while interacting with it. The esp8266 has different modes of operation, the most common being access point and client. A typical usage scenario while using the esp8266 would be to set it in access point mode, no password set, connect to it and submit a form with the ssid and password for the network it should join. In my scenario, the esp8266 works only in access point mode and the user connects to it. I could use a fixed password, but I want a randomly generated password each time the esp8266 turns on. I could opt to use a display, but this will probably be more expensive.","@context":"http://schema.org"}</script>
+{"@type":"BlogPosting","headline":"Minimalistic arduino communication: Led graph bar and image processing - PART 1","dateModified":"2018-08-19T21:00:00+02:00","datePublished":"2018-08-19T21:00:00+02:00","url":"http://localhost:4000/led-camera-decoding-part-one/","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/led-camera-decoding-part-one/"},"description":"I have been using the esp8266 for a while and exploring the use of least possible add-ons(to minimize costs) while interacting with it. The esp8266 has different modes of operation, the most common being access point and client. A typical usage scenario while using the esp8266 would be to set it in access point mode, no password set, connect to it and submit a form with the ssid and password for the network it should join. In my scenario, the esp8266 works only in access point mode and the user connects to it. I could use a fixed password, but I want a randomly generated password each time the esp8266 turns on. I could opt to use a display, but this will probably be more expensive.","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://mcantureinhard.github.io/feed.xml" title="Random code generator" /></head>
-<body><header class="site-header" role="banner">
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Random code generator" /></head>
+<script src="http://localhost:4000/assets/javascript/jquery-3.3.1.js"></script>
+  <script src="http://localhost:4000/assets/javascript/fontawesome-all.js"></script>
+  <script src="http://localhost:4000/assets/javascript/popper.js"></script>
+  <script src="http://localhost:4000/assets/javascript/bootstrap.js"></script>
+  <script src="http://localhost:4000/assets/javascript/bootstrap-sprockets.js"></script>
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Random code generator</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+  <body><header class="site-header" role="banner">
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
+  <nav class="navbar navbar-expand-md navbar-light bg-faded"><a class="site-title" rel="author" href="/">Random code generator</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto justify-content-around"><li class="nav-item">
+                <a class="nav-link active" href="/about/">About</a>
+              </li></ul>
+      </div></nav>
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
@@ -668,7 +670,27 @@
 
 <p>This is it for part one. For part two I’ll move on to using an Arduino and testing this code in the conditions it is intended to be used.</p>
 
-  </div><a class="u-url" href="/led-camera-decoding-part-one/" hidden></a>
+  </div><form method="POST"
+      action="https://api.staticman.net/v2/entry/mcantureinhard/mcantureinhard.github.io/comments">
+      <input name="fields[product]" type="hidden" value="led-camera-decoding-part-one" />
+      <input name="options[redirect]" type="hidden" value="http://localhost:4000/led-camera-decoding-part-one/" />
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="comment_name" name="fields[name]" placeholder="Your name">
+  </div>
+  <div class="form-group">
+    <label for="email">Email address (optional)</label>
+    <input type="email" class="form-control" id="comment_email" name="fields[email]" placeholder="name@example.com">
+  </div>
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <textarea class="form-control" name="fields[message]" id="comment_comment" rows="3"></textarea>
+  </div>
+  <button class="btn btn-primary" type="submit">Submit comment</button>
+</form>
+
+
+  <a class="u-url" href="/led-camera-decoding-part-one/" hidden></a>
 </article>
 
       </div>
@@ -685,7 +707,7 @@
           <li class="p-name">Random code generator</li><li><a class="u-email" href="mailto:m.cantu.reinhard@gmail.com">m.cantu.reinhard@gmail.com</a></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mcantureinhard"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">mcantureinhard</span></a></li></ul>
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mcantureinhard"><i class="fab fa-github"></i> <span class="username">mcantureinhard</span></a></li></ul>
 </div>
 
       <div class="footer-col footer-col-3">
