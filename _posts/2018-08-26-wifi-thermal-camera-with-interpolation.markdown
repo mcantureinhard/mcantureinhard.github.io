@@ -4,7 +4,7 @@ title:  "WiFi Access Point Mode Thermal Camera with interpolation"
 date:   2018-08-26 21:00:00 +0200
 categories: [image-processing,  microcontroller, sensor, esp8266, arduino, javascript]
 ---
-The AMG8833 is a sensor by Panasonic that allows to measure temperatures of a surface. The area is broken down into 64 parts as an 8x8 matrix. This sensor allows for up to 10 thermal measurements per second. In normal use cases, this is just fine and can be used as is. For this project I used the Feather HUZZAH with ESP8266 and the IR ThermalCamera FeatherWing from Adafruit. If we want to build a thermal camera, 8x8 is not a high resolution. we can use interpolation to infer data points between known data points.
+The AMG8833 is a sensor by Panasonic that allows to measure temperatures of a surface. The area is broken down into 64 parts as an 8x8 matrix. This sensor allows for up to 10 thermal measurements per second. In normal use cases, this is just fine and can be used as is. For this project I used the Feather HUZZAH with ESP8266 and the IR Thermal Camera FeatherWing from Adafruit. If we want to build a thermal camera, 8x8 is not a high resolution. we can use interpolation to infer data points between known data points.
 
 The simplest type of interpolation we could use is bilinear. The algorithm for calculating bilinear interpolation can be easily found. A simple javascript implementation is as follows:
 {% highlight javascript %}
