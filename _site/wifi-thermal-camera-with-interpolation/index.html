@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>WiFi Access Point Mode Thermal Camera with interpolation | Random code generator</title>
+<meta name="generator" content="Jekyll v3.8.3" />
+<meta property="og:title" content="WiFi Access Point Mode Thermal Camera with interpolation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The AMG8833 is a sensor by Panasonic that allows to measure temperatures of a surface. The area is broken down into 64 parts as an 8x8 matrix. This sensor allows for up to 10 thermal measurements per second. In normal use cases, this is just fine and can be used as is. For this project I used the Feather HUZZAH with ESP8266 and the IR ThermalCamera FeatherWing from Adafruit. If we want to build a thermal camera, 8x8 is not a high resolution. we can use interpolation to infer data points between known data points." />
+<meta property="og:description" content="The AMG8833 is a sensor by Panasonic that allows to measure temperatures of a surface. The area is broken down into 64 parts as an 8x8 matrix. This sensor allows for up to 10 thermal measurements per second. In normal use cases, this is just fine and can be used as is. For this project I used the Feather HUZZAH with ESP8266 and the IR ThermalCamera FeatherWing from Adafruit. If we want to build a thermal camera, 8x8 is not a high resolution. we can use interpolation to infer data points between known data points." />
+<link rel="canonical" href="https://mcantureinhard.github.io/wifi-thermal-camera-with-interpolation/" />
+<meta property="og:url" content="https://mcantureinhard.github.io/wifi-thermal-camera-with-interpolation/" />
+<meta property="og:site_name" content="Random code generator" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-08-26T21:00:00+02:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"WiFi Access Point Mode Thermal Camera with interpolation","dateModified":"2018-08-26T21:00:00+02:00","datePublished":"2018-08-26T21:00:00+02:00","url":"https://mcantureinhard.github.io/wifi-thermal-camera-with-interpolation/","mainEntityOfPage":{"@type":"WebPage","@id":"https://mcantureinhard.github.io/wifi-thermal-camera-with-interpolation/"},"description":"The AMG8833 is a sensor by Panasonic that allows to measure temperatures of a surface. The area is broken down into 64 parts as an 8x8 matrix. This sensor allows for up to 10 thermal measurements per second. In normal use cases, this is just fine and can be used as is. For this project I used the Feather HUZZAH with ESP8266 and the IR ThermalCamera FeatherWing from Adafruit. If we want to build a thermal camera, 8x8 is not a high resolution. we can use interpolation to infer data points between known data points.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://mcantureinhard.github.io/feed.xml" title="Random code generator" /></head>
+<script src="https://mcantureinhard.github.io/assets/javascript/jquery-3.3.1.js"></script>
+  <script src="https://mcantureinhard.github.io/assets/javascript/fontawesome-all.js"></script>
+  <script src="https://mcantureinhard.github.io/assets/javascript/popper.js"></script>
+  <script src="https://mcantureinhard.github.io/assets/javascript/bootstrap.js"></script>
+
+  <body><header class="site-header" role="banner">
+
+  <nav class="navbar navbar-expand-md navbar-light bg-faded"><a class="site-title" rel="author" href="/">Random code generator</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto justify-content-around"><li class="nav-item">
+                <a class="nav-link active" href="/about/">About</a>
+              </li></ul>
+      </div></nav>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">WiFi Access Point Mode Thermal Camera with interpolation</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-08-26T21:00:00+02:00" itemprop="datePublished">Aug 26, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>The AMG8833 is a sensor by Panasonic that allows to measure temperatures of a surface. The area is broken down into 64 parts as an 8x8 matrix. This sensor allows for up to 10 thermal measurements per second. In normal use cases, this is just fine and can be used as is. For this project I used the Feather HUZZAH with ESP8266 and the IR ThermalCamera FeatherWing from Adafruit. If we want to build a thermal camera, 8x8 is not a high resolution. we can use interpolation to infer data points between known data points.</p>
+
+<p>The simplest type of interpolation we could use is bilinear. The algorithm for calculating bilinear interpolation can be easily found. A simple javascript implementation is as follows:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">interpolate_points</span><span class="p">(</span><span class="nx">p00</span><span class="p">,</span> <span class="nx">p01</span><span class="p">,</span> <span class="nx">p10</span><span class="p">,</span> <span class="nx">p11</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">a00</span> <span class="o">=</span> <span class="nx">p00</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">a10</span> <span class="o">=</span> <span class="nx">p10</span> <span class="o">-</span> <span class="nx">p00</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">a01</span> <span class="o">=</span> <span class="nx">p01</span> <span class="o">-</span> <span class="nx">p00</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">a11</span> <span class="o">=</span> <span class="nx">p11</span> <span class="o">+</span> <span class="nx">p00</span> <span class="o">-</span> <span class="p">(</span><span class="nx">p10</span> <span class="o">+</span> <span class="nx">p01</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">a00</span> <span class="o">+</span> <span class="nx">a10</span><span class="o">*</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">a01</span><span class="o">*</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">a11</span><span class="o">*</span><span class="nx">x</span><span class="o">*</span><span class="nx">y</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">bilinear_resize</span><span class="p">(</span><span class="nx">arr_in</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">mult</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">nh</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">*</span> <span class="nx">mult</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">nw</span> <span class="o">=</span> <span class="nx">w</span> <span class="o">*</span> <span class="nx">mult</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">nh</span><span class="o">*</span><span class="nx">nw</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">){</span>
+      <span class="nx">out</span><span class="p">[</span><span class="nx">i</span><span class="o">*</span><span class="nx">mult</span><span class="o">*</span><span class="nx">nw</span> <span class="o">+</span> <span class="nx">j</span><span class="o">*</span><span class="nx">mult</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arr_in</span><span class="p">[</span><span class="nx">i</span><span class="o">*</span><span class="nx">w</span><span class="o">+</span><span class="nx">j</span><span class="p">];</span>
+      <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">k</span> <span class="o">&lt;</span> <span class="nx">mult</span> <span class="o">&amp;&amp;</span> <span class="nx">k</span> <span class="o">&lt;</span> <span class="nx">nh</span><span class="p">;</span> <span class="nx">k</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">l</span> <span class="o">&lt;</span> <span class="nx">mult</span> <span class="o">&amp;&amp;</span> <span class="nx">l</span> <span class="o">&lt;</span> <span class="nx">nw</span><span class="p">;</span> <span class="nx">l</span><span class="o">++</span><span class="p">){</span>
+          <span class="kd">var</span> <span class="nx">py</span> <span class="o">=</span> <span class="nx">k</span><span class="o">/</span><span class="nx">mult</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">px</span> <span class="o">=</span> <span class="nx">l</span><span class="o">/</span><span class="nx">mult</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">mi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">mj</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="k">if</span><span class="p">((</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;=</span><span class="nx">h</span><span class="p">){</span>
+            <span class="nx">mi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="k">if</span><span class="p">((</span><span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">&gt;=</span><span class="nx">w</span><span class="p">){</span>
+            <span class="nx">mj</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="nx">out</span><span class="p">[(</span><span class="nx">i</span><span class="o">*</span><span class="nx">mult</span><span class="o">+</span><span class="nx">k</span><span class="p">)</span> <span class="o">*</span> <span class="nx">nw</span> <span class="o">+</span> <span class="nx">j</span><span class="o">*</span><span class="nx">mult</span> <span class="o">+</span> <span class="nx">l</span><span class="p">]</span> <span class="o">=</span> <span class="nx">interpolate_points</span><span class="p">(</span>
+              <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">*</span><span class="nx">w</span><span class="o">+</span><span class="nx">j</span><span class="p">],</span>
+              <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="o">*</span><span class="nx">w</span> <span class="o">+</span> <span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="nx">mj</span><span class="p">],</span>
+              <span class="nx">data</span><span class="p">[(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="nx">mi</span><span class="p">)</span> <span class="o">*</span> <span class="nx">w</span> <span class="o">+</span><span class="nx">j</span><span class="p">],</span>
+              <span class="nx">data</span><span class="p">[(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="nx">mi</span><span class="p">)</span> <span class="o">*</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="nx">mj</span><span class="p">],</span>
+              <span class="nx">py</span><span class="p">,</span>
+              <span class="nx">px</span>
+          <span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Bilinear interpolation works well, but the end result can still be a bit rough. I read about bicubic interpolation and how it is used to resize images. In the case of bicubic interpolation 16 points are used instead of 4, as the slopes on x and y are also required. I decided to try bicubic interpolation out to see if there was any improvement. I implemented a quick version based on a common matrix based algorithm. I added some quick code to handle the border. There are different ways to set values for imaginary exterior points. I wanted a quick test, so I decided to set them to zero. This will result in bad data near the border. The implementation is as follows:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">cubic_value</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">p</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">w</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">?</span> <span class="nx">arr</span><span class="p">[(</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">x</span><span class="p">]</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">y</span> <span class="o">&lt;=</span> <span class="nx">h</span> <span class="p">?</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">y</span> <span class="o">*</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">x</span><span class="p">]</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="nx">h</span> <span class="p">?</span> <span class="nx">arr</span><span class="p">[(</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">x</span><span class="p">]</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nx">h</span> <span class="p">?</span> <span class="nx">arr</span><span class="p">[(</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">x</span><span class="p">]</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nx">p</span><span class="o">*</span><span class="p">(</span><span class="nx">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="nx">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">p</span><span class="o">*</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="nx">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">5.0</span><span class="o">*</span><span class="nx">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">4.0</span><span class="o">*</span><span class="nx">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="nx">temp</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="nx">p</span><span class="o">*</span><span class="p">(</span><span class="mf">3.0</span><span class="o">*</span><span class="p">(</span><span class="nx">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="nx">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="nx">temp</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="nx">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">])));</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">bicubic_value</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">py</span><span class="p">,</span> <span class="nx">px</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">w</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">?</span> <span class="nx">cubic_value</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">py</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">x</span> <span class="o">&lt;=</span> <span class="nx">w</span> <span class="p">?</span> <span class="nx">cubic_value</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">py</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="nx">w</span> <span class="p">?</span> <span class="nx">cubic_value</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">py</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">temp</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nx">w</span> <span class="p">?</span> <span class="nx">cubic_value</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">py</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span> <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">cubic_value</span><span class="p">(</span><span class="nx">temp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">px</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">bicubic_resize</span><span class="p">(</span><span class="nx">arr_in</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">mult</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">min</span> <span class="o">=</span> <span class="nx">arr_in</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">arr_in</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">n_w</span> <span class="o">=</span> <span class="nx">w</span> <span class="o">*</span> <span class="nx">mult</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">n_h</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">*</span> <span class="nx">mult</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">n_w</span> <span class="o">*</span> <span class="nx">n_h</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">){</span>
+      <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">inner_y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">inner_y</span> <span class="o">&lt;</span> <span class="nx">mult</span><span class="p">;</span><span class="nx">inner_y</span><span class="o">++</span><span class="p">){</span>
+          <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">inner_x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">inner_x</span> <span class="o">&lt;</span> <span class="nx">mult</span><span class="p">;</span><span class="nx">inner_x</span><span class="o">++</span><span class="p">){</span>
+            <span class="kd">var</span> <span class="nx">ny</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">mult</span> <span class="o">+</span> <span class="nx">inner_y</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">nx</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">mult</span> <span class="o">+</span> <span class="nx">inner_x</span><span class="p">;</span>
+            <span class="nx">out</span><span class="p">[</span><span class="nx">ny</span> <span class="o">*</span> <span class="nx">n_w</span> <span class="o">+</span> <span class="nx">nx</span><span class="p">]</span> <span class="o">=</span>  <span class="nx">bicubic_value</span><span class="p">(</span><span class="nx">arr_in</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">x</span><span class="p">,</span><span class="nx">inner_y</span><span class="o">/</span><span class="nx">mult</span><span class="p">,</span><span class="nx">inner_x</span><span class="o">/</span><span class="nx">mult</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">out</span><span class="p">[</span><span class="nx">ny</span> <span class="o">*</span> <span class="nx">n_w</span> <span class="o">+</span> <span class="nx">nx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nx">max</span><span class="p">){</span>
+              <span class="nx">max</span> <span class="o">=</span> <span class="nx">out</span><span class="p">[</span><span class="nx">ny</span> <span class="o">*</span> <span class="nx">n_w</span> <span class="o">+</span> <span class="nx">nx</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">out</span><span class="p">[</span><span class="nx">ny</span> <span class="o">*</span> <span class="nx">n_w</span> <span class="o">+</span> <span class="nx">nx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nx">min</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">min</span> <span class="o">=</span> <span class="nx">out</span><span class="p">[</span><span class="nx">ny</span> <span class="o">*</span> <span class="nx">n_w</span> <span class="o">+</span> <span class="nx">nx</span><span class="p">];</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'data'</span> <span class="p">:</span> <span class="nx">out</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span><span class="nx">min</span><span class="p">,</span><span class="s1">'max'</span><span class="p">:</span> <span class="nx">max</span><span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here are a few samples of the results:</p>
+
+<p>Hand no interpolation:
+<img src="/assets/images/thermal_camera/dsc02964_small.jpg" alt="Sample Image" /></p>
+
+<p>Hand bilinear interpolation 4x:
+<img src="/assets/images/thermal_camera/dsc02960_small.jpg" alt="Sample Image" /></p>
+
+<p>No interpolation, selfie:
+<img src="/assets/images/thermal_camera/no_interpolation_selfie.png" alt="Sample Image" /></p>
+
+<p>Bilinear interpolation, selfie:
+<img src="/assets/images/thermal_camera/bilinear_selfie.png" alt="Sample Image" /></p>
+
+<p>Bicubic interpolation, selfie:
+<img src="/assets/images/thermal_camera/bicubic_selfie.png" alt="Sample Image" /></p>
+
+<p>I am very satisfied with the results I got from the bilinear interpolation. I tried out both algorithms in Java and tested with some images and I was not able to see a noticeable difference. For an aplication like this, I’d stick to the simpler bilinear interpolation, specially since there is not much room to get 4x4 temperature data.</p>
+
+<p>There are a couple of applications I can think of for this sensor, as well as reasons to pair it with the ESP8266. Some of these could be: Anonymosly counting people, baby crib overhead temperature monitoring, stove monitoring. By using the ESP8266 in AP mode, it should be easy to put in place and configure the sensor by only using a phone.</p>
+
+  </div><form method="POST"
+      action="https://api.staticman.net/v2/entry/mcantureinhard/mcantureinhard.github.io/comments">
+      <input name="fields[product]" type="hidden" value="wifi-thermal-camera-with-interpolation" />
+      <input name="options[redirect]" type="hidden" value="https://mcantureinhard.github.io/wifi-thermal-camera-with-interpolation/" />
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="comment_name" name="fields[name]" placeholder="Your name">
+  </div>
+  <div class="form-group">
+    <label for="email">Email address (optional)</label>
+    <input type="email" class="form-control" id="comment_email" name="fields[email]" placeholder="name@example.com">
+  </div>
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <textarea class="form-control" name="fields[message]" id="comment_comment" rows="3"></textarea>
+  </div>
+  <button class="btn btn-primary" type="submit">Submit comment</button>
+</form>
+
+
+  <a class="u-url" href="/wifi-thermal-camera-with-interpolation/" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Random code generator</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Random code generator</li><li><a class="u-email" href="mailto:m.cantu.reinhard@gmail.com">m.cantu.reinhard@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/mcantureinhard"><i class="fab fa-github"></i> <span class="username">mcantureinhard</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>From time to time I do little projects at home. Here is the place I&#39;ll write about some of these.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

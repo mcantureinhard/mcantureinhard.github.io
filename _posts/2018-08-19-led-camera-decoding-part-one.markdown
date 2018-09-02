@@ -118,42 +118,42 @@ public class BlobFinder {
         int size = 0;
         while(queue.peek() != null){
             Pair current = queue.remove();
-            int _x = (int)current.getLeft();
-            int _y = (int)current.getRight();
+            int \_x = (int)current.getLeft();
+            int \_y = (int)current.getRight();
             if(visitedBlob[_y][_x] == 1 || visited[_y][_x] == 1){
                 continue;
             }
             visitedBlob[_y][_x] = 1;
-            int pixel = img.getRGB(_x,_y);
+            int pixel = img.getRGB(\_x,\_y);
             if(rgbDistance(base_color,pixel) > maxColorDistance){
                 continue;
             }
             size++;
             visited[_y][_x] = 1;
             alpha = (alpha + 1)%255;
-            if(_x < min_x){
-                min_x = _x;
+            if(\_x < min_x){
+                min_x = \_x;
             }
-            if(_x > max_x){
-                max_x = _x;
+            if(\_x > max_x){
+                max_x = \_x;
             }
-            if(_y < min_y){
-                min_y = _y;
+            if(\_y < min_y){
+                min_y = \_y;
             }
-            if(_y > max_y){
-                max_y = _y;
+            if(\_y > max_y){
+                max_y = \_y;
             }
-            if(_x>0 && visitedBlob[_y][_x - 1] != 1){
-                queue.add(new Pair((_x - 1),_y));
+            if(\_x>0 && visitedBlob[_y][_x - 1] != 1){
+                queue.add(new Pair((\_x - 1),\_y));
             }
-            if(_x < (img.getWidth() - 1) && visitedBlob[_y][_x + 1] != 1){
-                queue.add(new Pair((_x + 1),_y));
+            if(\_x < (img.getWidth() - 1) && visitedBlob[_y][_x + 1] != 1){
+                queue.add(new Pair((\_x + 1),\_y));
             }
-            if(_y > 0 && visitedBlob[_y - 1][_x] != 1){
-                queue.add(new Pair(_x ,(_y - 1)));
+            if(\_y > 0 && visitedBlob[\_y - 1][\_x] != 1){
+                queue.add(new Pair(\_x ,(\_y - 1)));
             }
-            if(_y < (img.getHeight() - 1) && visitedBlob[_y + 1][_x] != 1){
-                queue.add(new Pair(_x,_y + 1));
+            if(\_y < (img.getHeight() - 1) && visitedBlob[_y + 1][_x] != 1){
+                queue.add(new Pair(\_x,\_y + 1));
             }
         }
         if(size < minSize){
@@ -406,12 +406,12 @@ public class FastBlobFinderSkip {
             int match = -1;
             boolean change = false;
             int row = 0;
-            int _y;
+            int \_y;
             for(int y = width * row_start; y < (width * row_end)/2; y++){
-                _y = y*2;
+                \_y = y*2;
                 if(match == -1){
                     for(int i = 0; i < numColors; i++){
-                        if(rgbArrayDistanceLessThanOrEqual(bytes,pixelStride,_y,colors[i],maxColorDistance)){
+                        if(rgbArrayDistanceLessThanOrEqual(bytes,pixelStride,\_y,colors[i],maxColorDistance)){
                             match = i;
                             counter++;
                             mask[i] |= setter;
@@ -419,7 +419,7 @@ public class FastBlobFinderSkip {
                         }
                     }
                 } else{
-                    if(rgbArrayDistanceLessThanOrEqual(bytes,pixelStride,_y,colors[match],maxColorDistance)){
+                    if(rgbArrayDistanceLessThanOrEqual(bytes,pixelStride,\_y,colors[match],maxColorDistance)){
                         counter++;
                         mask[match] |= setter;
                         clearMask |= setter;
@@ -427,7 +427,7 @@ public class FastBlobFinderSkip {
                         if(counter + prevCount < minSize/2){
                             mask[match] = 0;
                             if(change && prevClearMask != 0 && prevClearMask != 0){
-                                int rowPos = _y % width;
+                                int rowPos = \_y % width;
                                 int mod = rowPos % masklen;
                                 int currentColumn = ((rowPos - mod)/ masklen)/2;
                                 if(currentColumn < 1)
@@ -451,7 +451,7 @@ public class FastBlobFinderSkip {
                         for(int i = 0; i < numColors; i++){
                             if(i == match)
                                 continue;
-                            if(rgbArrayDistanceLessThanOrEqual(bytes,pixelStride,_y,colors[i],maxColorDistance)){
+                            if(rgbArrayDistanceLessThanOrEqual(bytes,pixelStride,\_y,colors[i],maxColorDistance)){
                                 match = i;
                                 counter++;
                                 mask[i] |= setter;
@@ -462,7 +462,7 @@ public class FastBlobFinderSkip {
                     }
                 }
                 setter >>>= 1;
-                int next = _y+2;
+                int next = \_y+2;
                 int nextRow = next/2 % width;
                 if( nextRow % masklen == 0){
                     setter = 1L << 63;
@@ -516,13 +516,13 @@ public class FastBlobFinderSkip {
 
     private static boolean rgbArrayDistanceLessThanOrEqual(int[] bytes, int pixelStride, int position, int[] color, int distance){
         if(pixelStride == 1){
-            int _color = (color[0]<<16) | (color[1]<<8) | color[2];
-            return (rgbDistance(bytes[position], _color) <= distance);
+            int \_color = (color[0]<<16) | (color[1]<<8) | color[2];
+            return (rgbDistance(bytes[position], \_color) <= distance);
         }
-        int _shift = pixelStride - 3;
-        double rsq = Math.pow(bytes[position+_shift] - color[_shift], 2);
-        double gsq = Math.pow(bytes[position+_shift+1] - color[_shift+1], 2);
-        double bsq = Math.pow(bytes[position+_shift+2] - color[_shift+2], 2);
+        int \_shift = pixelStride - 3;
+        double rsq = Math.pow(bytes[position+\_shift] - color[\_shift], 2);
+        double gsq = Math.pow(bytes[position+\_shift+1] - color[\_shift+1], 2);
+        double bsq = Math.pow(bytes[position+\_shift+2] - color[\_shift+2], 2);
         return (Math.sqrt(rsq+gsq+bsq) <= distance);
     }
     private static double rgbDistance(int a, int b){
@@ -628,7 +628,7 @@ I did a number of changes to the sample code, but roughly the important pieces a
             updateImage(bitmap);
         }
     };
-  
+
 {% endhighlight %}
 
 This is it for part one. For part two I'll move on to using an Arduino and testing this code in the conditions it is intended to be used.
